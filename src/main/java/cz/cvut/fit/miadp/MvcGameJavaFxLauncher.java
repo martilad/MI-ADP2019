@@ -43,10 +43,8 @@ public class MvcGameJavaFxLauncher extends Application {
         ArrayList<String> pressedKeysCodes = new ArrayList<String>();
  
         theScene.setOnKeyPressed(
-            new EventHandler<KeyEvent>()
-            {
-                public void handle(KeyEvent e)
-                {
+            new EventHandler<KeyEvent>() {
+                public void handle(KeyEvent e) {
                     String code = e.getCode().toString();
  
                     // only add once... prevent duplicates
@@ -57,10 +55,8 @@ public class MvcGameJavaFxLauncher extends Application {
         );
  
         theScene.setOnKeyReleased(
-            new EventHandler<KeyEvent>()
-            {
-                public void handle(KeyEvent e)
-                {
+            new EventHandler<KeyEvent>() {
+                public void handle(KeyEvent e) {
                     String code = e.getCode().toString();
                     pressedKeysCodes.remove( code );
                 }
