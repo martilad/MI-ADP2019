@@ -4,11 +4,9 @@ import java.util.List;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.controller.GameController;
 import cz.cvut.fit.miadp.mvcgame.model.GameModel;
-import cz.cvut.fit.miadp.mvcgame.model.Position;
 // in future, use Bridge to remove this dependency
 import cz.cvut.fit.miadp.mvcgame.view.GameView;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 
 public class MvcGame
 {

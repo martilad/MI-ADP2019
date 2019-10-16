@@ -1,4 +1,4 @@
-package cz.cvut.fit.miadp.mvcgame.model;
+package cz.cvut.fit.miadp.mvcgame.model.geometry;
 
 public class Position
 {
@@ -35,4 +35,8 @@ public class Position
 	}
 
 
+	public void move(int x, int y) {
+		this.setX(x);
+		this.setY(y);
+	}
 }
