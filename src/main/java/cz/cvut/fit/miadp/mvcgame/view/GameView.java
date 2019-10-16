@@ -31,13 +31,13 @@ public class GameView implements IObserver {
 
     public void render(){
         if (this.updateCnt > 0) {
-            if (this.gr == null) return;
-            Position logoPos = this.model.getLogoPosition();
-            this.drawImage(logoPos, this.cvutLogoImage);
+        if (this.gr == null) return;
+        Position logoPos = this.model.getLogoPosition();
+        this.drawImage(logoPos, this.cvutLogoImage);
 
-            this.updateCnt = 0;
-        }
+        this.updateCnt = 0;
     }
+}
 
     public void update(){
         this.updateCnt++;
