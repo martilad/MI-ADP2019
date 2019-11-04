@@ -1,10 +1,9 @@
 package cz.cvut.fit.miadp.mvcgame.model.object;
 
+import cz.cvut.fit.miadp.mvcgame.model.GameObject;
 import cz.cvut.fit.miadp.mvcgame.model.geometry.Position;
 
-import java.util.Date;
-
-public abstract class LifeTimeLimitedGameObject extends GameObject{
+public abstract class LifeTimeLimitedGameObject extends GameObject {
 
     private long bornAt;
 
