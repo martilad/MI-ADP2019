@@ -35,8 +35,8 @@ public class Position
 	}
 
 
-	public void move(int x, int y) {
-		this.setX(x);
-		this.setY(y);
+	public void move(int dx, int dy) {
+		this.dimX += dx;
+		this.dimY += dy;
 	}
 }

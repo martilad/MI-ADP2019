@@ -69,10 +69,11 @@ public class MvcGameJavaFxLauncher extends Application {
             public void handle(long currentNanoTime)
             {
                 // Clear the canvas
-                // gc.clearRect(0, 0, winWidth, winHeigth);
     
                 theMvcGame.processPressedKeys(pressedKeysCodes);
+
                 theMvcGame.update();
+
                 theMvcGame.render(gc);
             }
         }.start();

@@ -26,10 +26,11 @@ public class MvcGame
 
     public void update() {
         // nothing yet
+        this.model.timeTick();
     }
 
     public void render(GraphicsContext gr) {
-        this.view.setGraphicsContext(gr);
+        this.view.setGraphics(gr);
         this.view.render();
     }
 

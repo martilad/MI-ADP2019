@@ -1,18 +1,14 @@
-package cz.cvut.fit.miadp.mvcgame.model.object;
+package cz.cvut.fit.miadp.mvcgame.model;
 
-import cz.cvut.fit.miadp.mvcgame.model.GameObject;
-import cz.cvut.fit.miadp.mvcgame.model.geometry.Position;
 
-public abstract class LifeTimeLimitedGameObject extends GameObject {
+public abstract class TimelifeAwareGameObject extends GameObject
+{
+    private long created = System.currentTimeMillis();
 
-    private long bornAt;
+    public long getLifetime()
+    {
+        return System.currentTimeMillis() - this.created;
 
-    public LifeTimeLimitedGameObject(Position position) {
-        super(position);
-        bornAt = System.currentTimeMillis();
     }
 
-    public long getAge(){
-        return System.currentTimeMillis()-bornAt;
-    }
 }

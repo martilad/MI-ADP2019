@@ -13,16 +13,16 @@ public class GameController {
     public void handleKeyCode(String keyCode){
         switch(keyCode){
             case "UP":
-                this.model.moveLogoUp();
+                this.model.moveCannonUp();
                 break;
             case "DOWN":
-                this.model.moveLogoDown();
+                this.model.moveCannonDown();
                 break;
             case "LEFT":
-                this.model.moveLogoLeft();
+                this.model.moveCannonLeft();
                 break;
             case "RIGHT":
-                this.model.moveLogoRight();
+                this.model.moveCannonRight();
                 break;
             default:
                 //nothing
