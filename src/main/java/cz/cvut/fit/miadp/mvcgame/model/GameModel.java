@@ -10,6 +10,7 @@ import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCollision;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsEnemy;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsMissile;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsModelInfo;
+import cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyA.Missile_A;
 import cz.cvut.fit.miadp.mvcgame.observer.IObservable;
 import cz.cvut.fit.miadp.mvcgame.observer.IObserver;
 
@@ -21,7 +22,7 @@ public class GameModel implements IObservable {
     private AbsCannon cannon;
     private AbsModelInfo gameInfo;
     private List<AbsEnemy> enemies;
-    private List<AbsMissile> missile;
+    private List<AbsMissile> missiles;
     private List<AbsCollision> collisions;
 
     public GameModel() {
@@ -31,7 +32,7 @@ public class GameModel implements IObservable {
         this.gameInfo = this.goFact.createModelInfo();
 
         this.enemies = new ArrayList<AbsEnemy>();
-        this.missile = new ArrayList<AbsMissile>();
+        this.missiles = new ArrayList<AbsMissile>();
         this.collisions = new ArrayList<AbsCollision>();
     }
 
@@ -65,6 +66,7 @@ public class GameModel implements IObservable {
 
 
 
+
     @Override
     public void registerObserver(IObserver obs) {
         this.myObs.add(obs);
@@ -88,7 +90,7 @@ public class GameModel implements IObservable {
     public List<GameObject> getGameObjects() {
         List<GameObject> go = new ArrayList<GameObject>();
 
-        go.addAll(this.missile);
+        go.addAll(this.missiles);
         go.addAll(this.enemies);
         go.addAll(this.collisions);
         go.add(this.cannon);
@@ -98,7 +100,23 @@ public class GameModel implements IObservable {
     }
 
     public void timeTick() {
-        //this.moveMissiles();
+        /*try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }*/
+        this.moveMissiles();
     }
 
+    private void moveMissiles() {
+        for (AbsMissile missile : this.missiles){
+            missile.move();
+        }
+        this.notifyMyObservers();
+    }
+
+    public void cannonShoot() {
+        this.missiles.add(this.cannon.shoot());
+        this.notifyMyObservers();
+    }
 }

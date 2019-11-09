@@ -24,6 +24,13 @@ public class GameController {
             case "RIGHT":
                 this.model.moveCannonRight();
                 break;
+            case "SPACE":
+                this.model.cannonShoot();
+                break;
+            case "M":
+                this.model.cannonShoot();
+                this.model.cannonShoot();
+                break;
             default:
                 //nothing
         }

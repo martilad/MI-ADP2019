@@ -2,13 +2,14 @@ package cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyA;
 
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCannon;
+import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsMissile;
 
 public class Cannon_A extends AbsCannon
 {
     public Cannon_A()
     {
         this.setX(MvcGameConfig.CANON_POS_X);
-        this.setX(MvcGameConfig.CANON_POS_Y);
+        this.setY(MvcGameConfig.CANON_POS_Y);
         //this.setX((int)(MvcGameConfig.CANON_POS_Y / 2));
     }
 
@@ -51,6 +52,24 @@ public class Cannon_A extends AbsCannon
     public void decPower()
     {
 
+    }
+
+    @Override
+    public AbsMissile shoot() {
+        AbsMissile mis = this.goFact.createMissile();
+        mis.setX(this.getX());
+        mis.setY(this.getY());
+        return mis;
+    }
+
+    @Override
+    public void setDoubleShootingMode() {
+
+    }
+
+    @Override
+    public AbsMissile primitiveShoot() {
+        return null;
     }
 
     @Override

@@ -1,11 +1,14 @@
 package cz.cvut.fit.miadp.mvcgame.model;
 
+import cz.cvut.fit.miadp.mvcgame.abstractFactory.GameObjsFac_A;
+import cz.cvut.fit.miadp.mvcgame.abstractFactory.IGameObjsFac;
 import cz.cvut.fit.miadp.mvcgame.model.geometry.Position;
 import cz.cvut.fit.miadp.mvcgame.visitor.IVisitor;
 
 public abstract class GameObject {
 
-    protected Position position = new Position(0,0);;
+    protected Position position = new Position(0,0);
+    protected IGameObjsFac goFact = new GameObjsFac_A();
 
     public void move(int dx, int dy)
     {

@@ -10,4 +10,7 @@ public abstract class AbsMissile extends GameObject
         visitor.visitMissile(this);
     }
 
+
+    public abstract void move();
+
 }

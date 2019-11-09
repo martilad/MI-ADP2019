@@ -2,8 +2,14 @@ package cz.cvut.fit.miadp.mvcgame.abstractFactory;
 
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.*;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyA.*;
+import cz.cvut.fit.miadp.mvcgame.strategy.IMovingStrategy;
+import cz.cvut.fit.miadp.mvcgame.strategy.SimpleMoveStrategy;
 
 public class GameObjsFac_A implements IGameObjsFac {
+
+    private IMovingStrategy activeMovingStrategy = new SimpleMoveStrategy();
+
+    //game model a nacita si z nej faktory nastavit
 
     @Override
     public AbsCannon createCannon() {
@@ -22,7 +28,7 @@ public class GameObjsFac_A implements IGameObjsFac {
 
     @Override
     public AbsMissile createMissile() {
-        return new Missile_A();
+        return new Missile_A(this.activeMovingStrategy);
     }
 
     @Override

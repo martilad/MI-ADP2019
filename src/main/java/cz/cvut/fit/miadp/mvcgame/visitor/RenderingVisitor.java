@@ -14,11 +14,13 @@ import javafx.scene.image.ImageView;
 public class RenderingVisitor implements IVisitor {
 
     private Image cannonImg;
+    private Image missileImg;
     private ImageView canon;
     private GraphicsContext gr;
 
     public RenderingVisitor(){
         this.cannonImg = new Image("images/cannon.png");
+        this.missileImg = new Image("images/missile.png");
         this.canon = new ImageView(this.cannonImg);
     }
 
@@ -36,7 +38,6 @@ public class RenderingVisitor implements IVisitor {
 
     private void drawCannon(AbsCannon go) {
         if(this.gr == null)  return;
-        this.gr.clearRect(go.getX()-MvcGameConfig.MOVE_STEP, go.getY()-MvcGameConfig.MOVE_STEP, this.cannonImg.getWidth()+ MvcGameConfig.MOVE_STEP*2, this.cannonImg.getHeight()+MvcGameConfig.MOVE_STEP*2);
         this.gr.drawImage(this.cannonImg, go.getX(), go.getY());
     }
 
@@ -54,8 +55,8 @@ public class RenderingVisitor implements IVisitor {
 
     @Override
     public void visitMissile(AbsMissile go) {
-        // TODO Auto-generated method stub
-
+        if(this.gr == null)  return;
+        this.gr.drawImage(this.missileImg, go.getX(), go.getY());
     }
 
     @Override

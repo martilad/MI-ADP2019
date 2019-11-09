@@ -1,5 +1,6 @@
 package cz.cvut.fit.miadp.mvcgame.view;
 
+import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.controller.GameController;
 import cz.cvut.fit.miadp.mvcgame.model.GameModel;
 import cz.cvut.fit.miadp.mvcgame.model.GameObject;
@@ -14,6 +15,7 @@ public class GameView implements IObserver {
     private GameModel model;
     private IVisitor renderingVisitor;
     private int updateCnt = 1;
+    private GraphicsContext gr;
 
     public GameView(GameModel model) {
         this.model = model;
@@ -25,6 +27,7 @@ public class GameView implements IObserver {
 
     public void setGraphics(GraphicsContext gr)
     {
+        this.gr = gr;
         this.renderingVisitor.setGraphics(gr);
     }
 
@@ -40,6 +43,7 @@ public class GameView implements IObserver {
         if(this.updateCnt > 0)
         {
 
+            this.gr.clearRect(0, 0, MvcGameConfig.MAX_X, MvcGameConfig.SCENE_HEIGHT);
             for(GameObject go : this.model.getGameObjects())
             {
                 go.accept(this.renderingVisitor);

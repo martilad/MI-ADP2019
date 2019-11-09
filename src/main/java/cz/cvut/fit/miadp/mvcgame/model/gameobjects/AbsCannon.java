@@ -30,4 +30,9 @@ public abstract class AbsCannon extends GameObject {
     }
 
 
+    public abstract AbsMissile shoot();
+
+    public abstract void setDoubleShootingMode();
+
+    public abstract AbsMissile primitiveShoot();
 }
