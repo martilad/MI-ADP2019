@@ -1,10 +1,11 @@
 package cz.cvut.fit.miadp.mvcgame.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
+import cz.cvut.fit.miadp.mvcgame.MvcGame;
 import cz.cvut.fit.miadp.mvcgame.abstractFactory.GameObjsFac_A;
 import cz.cvut.fit.miadp.mvcgame.abstractFactory.IGameObjsFac;
+import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCannon;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCollision;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsEnemy;
@@ -13,17 +14,24 @@ import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsModelInfo;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyA.Missile_A;
 import cz.cvut.fit.miadp.mvcgame.observer.IObservable;
 import cz.cvut.fit.miadp.mvcgame.observer.IObserver;
+import cz.cvut.fit.miadp.mvcgame.proxy.IGameModel;
 
-public class GameModel implements IObservable {
+public class GameModel implements IObservable, IGameModel {
     private List<IObserver> myObs;
 
-    private IGameObjsFac goFact = new GameObjsFac_A();
+    private IGameObjsFac goFact = new GameObjsFac_A(this);
 
     private AbsCannon cannon;
     private AbsModelInfo gameInfo;
     private List<AbsEnemy> enemies;
     private List<AbsMissile> missiles;
     private List<AbsCollision> collisions;
+
+    private Timer timer;
+    private long stopwatch;
+    private int score;
+    private boolean runGame;
+    //private Stack<AbsGameCommand> executedCommands;
 
     public GameModel() {
         this.myObs = new ArrayList<IObserver>();
@@ -34,6 +42,7 @@ public class GameModel implements IObservable {
         this.enemies = new ArrayList<AbsEnemy>();
         this.missiles = new ArrayList<AbsMissile>();
         this.collisions = new ArrayList<AbsCollision>();
+        this.initTimer();
     }
 
     public void moveCannonUp()
@@ -43,29 +52,16 @@ public class GameModel implements IObservable {
         this.notifyMyObservers();
     }
 
+    public AbsCannon getCannon(){
+        return this.cannon;
+    }
+
     public void moveCannonDown()
     {
         this.cannon.moveDown();
 
         this.notifyMyObservers();
     }
-
-    public void moveCannonLeft()
-    {
-        this.cannon.moveLeft();
-
-        this.notifyMyObservers();
-    }
-
-    public void moveCannonRight()
-    {
-        this.cannon.moveRight();
-
-        this.notifyMyObservers();
-    }
-
-
-
 
     @Override
     public void registerObserver(IObserver obs) {
@@ -85,7 +81,46 @@ public class GameModel implements IObservable {
         }
     }
 
+    private void initTimer() {
+        this.timer = new Timer();
+        this.timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                //executeCommands();
+                moveGameObjects();
+                checkWin();
+                stopwatch += MvcGameConfig.TIME_PERIOD;
+            }
+        }, 0, MvcGameConfig.TIME_PERIOD);
+    }
 
+    private void checkWin() {
+        if (this.score < MvcGameConfig.GOAL_TO_WIN) return;
+        stopGame();
+    }
+
+    public void stopGame() {
+        timer.cancel();
+        this.runGame = false;
+        this.notifyMyObservers();
+    }
+
+    public void startGame() {
+        if (runGame) return;
+        //initGameModel();
+        //initGameObjects();
+        initTimer();
+        this.notifyMyObservers();
+    }
+
+    private void moveGameObjects() {
+        moveMissiles();
+        //moveEnemies();
+        //removeBadMissiles();
+        //handleCollisions();
+        //addEnemies();
+        this.notifyMyObservers();
+    }
 
     public List<GameObject> getGameObjects() {
         List<GameObject> go = new ArrayList<GameObject>();
@@ -116,7 +151,14 @@ public class GameModel implements IObservable {
     }
 
     public void cannonShoot() {
-        this.missiles.add(this.cannon.shoot());
+
+        this.missiles.addAll(this.cannon.shoot());
+        this.notifyMyObservers();
+    }
+
+    @Override
+    public void cannonToggleMode() {
+        this.cannon.toggleShootingMode();
         this.notifyMyObservers();
     }
 }

@@ -7,8 +7,10 @@ public class Missile_A extends AbsMissile {
 
     private IMovingStrategy moveStrat;
 
-    public Missile_A(IMovingStrategy myMoveStrat){
+    public Missile_A(int x, int y, IMovingStrategy myMoveStrat){
         this.moveStrat = myMoveStrat;
+        this.setX(x);
+        this.setY(y);
     }
 
     public void move(){

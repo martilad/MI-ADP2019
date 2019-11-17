@@ -12,7 +12,7 @@ public class SimpleMoveStrategy implements IMovingStrategy {
 
     @Override
     public void updatePosition(AbsMissile absMissile) {
-        absMissile.move(new Random().nextInt(5)-2, new Random().nextInt(5)-2);
+        absMissile.move(MvcGameConfig.MOVE_STEP, 0);
     }
 
 

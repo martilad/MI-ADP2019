@@ -1,26 +1,48 @@
 package cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyA;
 
+import cz.cvut.fit.miadp.mvcgame.abstractFactory.IGameObjsFac;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCannon;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsMissile;
+import cz.cvut.fit.miadp.mvcgame.state.IShootingMode;
+import cz.cvut.fit.miadp.mvcgame.state.NShootingMode;
+import cz.cvut.fit.miadp.mvcgame.state.SingleShootingMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cannon_A extends AbsCannon
 {
-    public Cannon_A()
+    private static final IShootingMode singleShootingMode = new SingleShootingMode();
+    private static final IShootingMode doubleShootingMode = new NShootingMode();
+    private List<AbsMissile> shootBatch;
+
+    public Cannon_A(IGameObjsFac goFactory)
     {
-        this.setX(MvcGameConfig.CANON_POS_X);
-        this.setY(MvcGameConfig.CANON_POS_Y);
-        //this.setX((int)(MvcGameConfig.CANON_POS_Y / 2));
+        super(goFactory);
+        this.shootingMode = singleShootingMode;
+        this.setX(MvcGameConfig.CANON_INIT_X);
+        this.setY(MvcGameConfig.CANON_INIT_Y);
     }
 
-    public Float getVelocity()
+    public Double getVelocity()
     {
         return null;
     }
 
-    public Float getAngle()
+    public Double getAngle()
     {
         return null;
+    }
+
+    @Override
+    public void setVelocity(Double velocity) {
+
+    }
+
+    @Override
+    public void setAngle(Double angle) {
+
     }
 
 
@@ -55,21 +77,25 @@ public class Cannon_A extends AbsCannon
     }
 
     @Override
-    public AbsMissile shoot() {
-        AbsMissile mis = this.goFact.createMissile();
-        mis.setX(this.getX());
-        mis.setY(this.getY());
-        return mis;
+    public List<AbsMissile> shoot() {
+        this.shootBatch = new ArrayList<>();
+
+        this.shootingMode.shoot(this);
+
+        return this.shootBatch;
+    }
+
+    public void setNShootingMode() {
+        shootingMode = doubleShootingMode;
+    }
+
+    public void setSingleShootingMode() {
+        shootingMode = singleShootingMode;
     }
 
     @Override
-    public void setDoubleShootingMode() {
-
-    }
-
-    @Override
-    public AbsMissile primitiveShoot() {
-        return null;
+    public void primitiveShoot() {
+        this.shootBatch.add(this.goFactory.createMissile());
     }
 
     @Override
@@ -81,18 +107,6 @@ public class Cannon_A extends AbsCannon
     @Override
     public void moveDown() {
         this.move(0, MvcGameConfig.MOVE_STEP);
-
-    }
-
-    @Override
-    public void moveLeft() {
-        this.move(-1* MvcGameConfig.MOVE_STEP, 0);
-
-    }
-
-    @Override
-    public void moveRight() {
-        this.move(MvcGameConfig.MOVE_STEP, 0);
 
     }
 

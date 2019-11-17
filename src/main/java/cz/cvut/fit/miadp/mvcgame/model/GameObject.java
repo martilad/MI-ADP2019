@@ -1,14 +1,12 @@
 package cz.cvut.fit.miadp.mvcgame.model;
 
-import cz.cvut.fit.miadp.mvcgame.abstractFactory.GameObjsFac_A;
-import cz.cvut.fit.miadp.mvcgame.abstractFactory.IGameObjsFac;
+import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.model.geometry.Position;
 import cz.cvut.fit.miadp.mvcgame.visitor.IVisitor;
 
 public abstract class GameObject {
 
-    protected Position position = new Position(0,0);
-    protected IGameObjsFac goFact = new GameObjsFac_A();
+    private Position position = new Position(0,0);
 
     public void move(int dx, int dy)
     {
@@ -29,6 +27,11 @@ public abstract class GameObject {
 
     public void setY(int y) {
         this.position.setY(y);
+    }
+
+    public boolean collidesWith(GameObject other) {
+        return (Math.abs(this.getX() - other.getX())) < MvcGameConfig.COLLISION_NEIGHBORHOOD
+                && (Math.abs(this.getY() - other.getY())) < MvcGameConfig.COLLISION_NEIGHBORHOOD;
     }
 
     public abstract void accept(IVisitor visitor);

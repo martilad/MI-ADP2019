@@ -4,7 +4,7 @@ import cz.cvut.fit.miadp.mvcgame.model.gameobjects.*;
 
 public interface IGameObjsFac {
     AbsCannon createCannon();
-    AbsCollision createCollision();
+    AbsCollision createCollision(int x, int y);
     AbsEnemy createEnemy();
     AbsMissile createMissile();
     AbsModelInfo createModelInfo();

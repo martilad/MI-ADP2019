@@ -6,18 +6,19 @@ import cz.cvut.fit.miadp.mvcgame.model.GameModel;
 import cz.cvut.fit.miadp.mvcgame.model.GameObject;
 import cz.cvut.fit.miadp.mvcgame.model.geometry.Position;
 import cz.cvut.fit.miadp.mvcgame.observer.IObserver;
+import cz.cvut.fit.miadp.mvcgame.proxy.IGameModel;
 import cz.cvut.fit.miadp.mvcgame.visitor.IVisitor;
 import cz.cvut.fit.miadp.mvcgame.visitor.RenderingVisitor;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class GameView implements IObserver {
-    private GameModel model;
+    private IGameModel model;
     private IVisitor renderingVisitor;
     private int updateCnt = 1;
     private GraphicsContext gr;
 
-    public GameView(GameModel model) {
+    public GameView(IGameModel model) {
         this.model = model;
 
         this.model.registerObserver(this);
@@ -32,7 +33,9 @@ public class GameView implements IObserver {
     }
 
     public GameController makeController() {
-        return new GameController(model);
+        GameController con = new GameController();
+        con.setGameModel(this.model);
+        return con;
     }
 
     public void update() {
@@ -43,7 +46,7 @@ public class GameView implements IObserver {
         if(this.updateCnt > 0)
         {
 
-            this.gr.clearRect(0, 0, MvcGameConfig.MAX_X, MvcGameConfig.SCENE_HEIGHT);
+            this.gr.clearRect(0, 0, MvcGameConfig.MAX_X, MvcGameConfig.MAX_Y);
             for(GameObject go : this.model.getGameObjects())
             {
                 go.accept(this.renderingVisitor);

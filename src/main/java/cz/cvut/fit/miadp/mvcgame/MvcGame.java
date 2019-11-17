@@ -5,12 +5,13 @@ import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.controller.GameController;
 import cz.cvut.fit.miadp.mvcgame.model.GameModel;
 // in future, use Bridge to remove this dependency
+import cz.cvut.fit.miadp.mvcgame.proxy.IGameModel;
 import cz.cvut.fit.miadp.mvcgame.view.GameView;
 import javafx.scene.canvas.GraphicsContext;
 
 public class MvcGame
 {
-    private GameModel model;
+    private IGameModel model;
     private GameController controller;
     private GameView view;
 
@@ -26,7 +27,7 @@ public class MvcGame
 
     public void update() {
         // nothing yet
-        this.model.timeTick();
+        //this.model.timeTick();
     }
 
     public void render(GraphicsContext gr) {
