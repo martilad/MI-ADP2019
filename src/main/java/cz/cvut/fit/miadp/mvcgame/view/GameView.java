@@ -45,13 +45,11 @@ public class GameView implements IObserver {
     public void render() {
         if(this.updateCnt > 0)
         {
-
             this.gr.clearRect(0, 0, MvcGameConfig.MAX_X, MvcGameConfig.MAX_Y);
             for(GameObject go : this.model.getGameObjects())
             {
                 go.accept(this.renderingVisitor);
             }
-
             this.updateCnt = 0;
         }
     }

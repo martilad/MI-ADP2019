@@ -44,8 +44,8 @@ public class GameObjsFac_A implements IGameObjsFac {
         return new Missile_A(
                 this.model.getCannon().getX(),
                 this.model.getCannon().getY(),
-                this.model.getCannon().getVelocity(),
                 this.model.getCannon().getAngle(),
+                this.model.getCannon().getVelocity(),
                 this.model.getActiveMovingStrategy()
         );
     }

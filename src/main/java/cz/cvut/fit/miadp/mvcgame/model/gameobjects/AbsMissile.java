@@ -3,12 +3,12 @@ package cz.cvut.fit.miadp.mvcgame.model.gameobjects;
 import cz.cvut.fit.miadp.mvcgame.model.TimeLifeAwareGameObject;
 import cz.cvut.fit.miadp.mvcgame.visitor.IVisitor;
 
+import javax.sound.midi.SysexMessage;
+
 public abstract class AbsMissile extends TimeLifeAwareGameObject
 {
     private double angle;
     private double velocity;
-    private int initX;
-    private int initY;
 
 
     public void accept(IVisitor visitor)
@@ -21,18 +21,13 @@ public abstract class AbsMissile extends TimeLifeAwareGameObject
     public AbsMissile(int x, int y, double angle, double velocity) {
         this.setX(x);
         this.setY(y);
-        this.setInitX(x);
-        this.setInitY(y);
         this.setAngle(angle);
         this.setVelocity(velocity);
-
     }
 
     public AbsMissile(AbsMissile missile) {
         this.setX(missile.getX());
         this.setY(missile.getY());
-        this.setInitX(missile.getInitX());
-        this.setInitY(missile.getInitY());
         this.setAngle(missile.getAngle());
         this.setVelocity(missile.getVelocity());
     }
@@ -51,22 +46,6 @@ public abstract class AbsMissile extends TimeLifeAwareGameObject
 
     public void setVelocity(double velocity) {
         this.velocity = velocity;
-    }
-
-    public void setInitX(int initX) {
-        this.initX = initX;
-    }
-
-    public void setInitY(int initY) {
-        this.initY = initY;
-    }
-
-    public int getInitX() {
-        return initX;
-    }
-
-    public int getInitY() {
-        return initY;
     }
 
     public abstract AbsMissile clone();

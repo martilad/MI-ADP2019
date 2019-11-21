@@ -51,16 +51,18 @@ public class GameModel implements IObservable, IGameModel {
     public GameModel() {
         goFact = new GameObjsFac_A(this);
         this.movingStrategies = new ArrayList<>();
+        movingStrategies.add(new RealisticMoveStrategy());
         movingStrategies.add(new SimpleMoveStrategy());
         movingStrategies.add(new RandomMoveStrategy());
-        movingStrategies.add(new RealisticMoveStrategy());
+
+
         this.myObs = new ArrayList<IObserver>();
         this.cannon = this.goFact.createCannon();
         this.gameInfo = this.goFact.createModelInfo();
-        this.initTimer();
         this.setStart();
         this.cannon = this.goFact.createCannon();
         this.addEnemies();
+        this.initTimer();
     }
 
     private void setStart(){
@@ -126,6 +128,7 @@ public class GameModel implements IObservable, IGameModel {
                 executeCommands();
                 moveGameObjects();
                 checkWin();
+                //System.out.println("hej");
                 stopwatch += MvcGameConfig.TIME_PERIOD;
             }
         }, 0, MvcGameConfig.TIME_PERIOD);
@@ -213,6 +216,7 @@ public class GameModel implements IObservable, IGameModel {
     @Override
     public void switchMovingStrategy() {
         this.actMoveStrategyIndex = (this.actMoveStrategyIndex + 1) % this.movingStrategies.size();
+        System.out.println("Moving strategy: " + this.actMoveStrategyIndex);
     }
 
     @Override
@@ -407,6 +411,7 @@ public class GameModel implements IObservable, IGameModel {
     @Override
     public void cannonToggleMode() {
         this.cannon.toggleShootingMode();
+        System.out.println("mode strategy: " + this.cannon.getShootingMode());
         this.notifyMyObservers();
     }
 
