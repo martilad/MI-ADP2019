@@ -17,6 +17,11 @@ public abstract class AbsCannon extends GameObject {
         this.goFactory = goFactory;
     }
 
+    public AbsCannon(AbsCannon c){
+        this.goFactory = c.getGameObjsFac();
+        this.shootingMode = c.getShootingMode();
+    }
+
     public abstract Double getVelocity();
     public abstract Double getAngle();
 
@@ -47,5 +52,15 @@ public abstract class AbsCannon extends GameObject {
     public abstract void setNShootingMode();
     public abstract void setSingleShootingMode();
 
+    public IShootingMode getShootingMode(){
+        return this.shootingMode;
+    }
+
+    public IGameObjsFac getGameObjsFac(){
+        return this.goFactory;
+    }
+
     public abstract void primitiveShoot();
+
+    public abstract AbsCannon clone();
 }

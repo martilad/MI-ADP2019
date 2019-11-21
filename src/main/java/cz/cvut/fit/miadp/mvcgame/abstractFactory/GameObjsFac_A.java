@@ -6,11 +6,13 @@ import cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyA.*;
 import cz.cvut.fit.miadp.mvcgame.strategy.IMovingStrategy;
 import cz.cvut.fit.miadp.mvcgame.strategy.SimpleMoveStrategy;
 
+import java.util.Random;
+
 public class GameObjsFac_A implements IGameObjsFac {
 
     private GameModel model;
     private IMovingStrategy activeMovingStrategy = new SimpleMoveStrategy();
-
+    private Random random = new Random();
     public GameObjsFac_A(GameModel model)
     {
         this.model = model;
@@ -31,18 +33,26 @@ public class GameObjsFac_A implements IGameObjsFac {
 
     @Override
     public AbsEnemy createEnemy() {
-        return new Enemy_A();
+        int place = random.nextInt(this.model.getConfigMaxWidth() - (this.model.getConfigMaxWidth() / 5));
+        int x_cannon_zone = (this.model.getConfigMaxWidth() / 5) + place;
+        int y = random.nextInt(this.model.getConfigMaxWidth());
+        return new Enemy_A(x_cannon_zone, y, model.getLevel());
     }
 
     @Override
     public AbsMissile createMissile() {
-        return new Missile_A(this.model.getCannon().getX(),
-                this.model.getCannon().getY(),this.activeMovingStrategy);
+        return new Missile_A(
+                this.model.getCannon().getX(),
+                this.model.getCannon().getY(),
+                this.model.getCannon().getVelocity(),
+                this.model.getCannon().getAngle(),
+                this.model.getActiveMovingStrategy()
+        );
     }
 
     @Override
     public AbsModelInfo createModelInfo() {
-        return new ModelInfo_A();
+        return new ModelInfo_A(this.model);
     }
 
 }

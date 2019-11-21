@@ -3,10 +3,14 @@ package cz.cvut.fit.miadp.mvcgame.model;
 
 public abstract class TimeLifeAwareGameObject extends GameObject
 {
-    private long created = System.currentTimeMillis();
+    private int created = 0;
 
-    public long getLifetime() {
-        return System.currentTimeMillis() - this.created;
+    public int getLifetime() {
+        return this.created;
+    }
+
+    public void increaseTime(){
+        this.created++;
     }
 
 }

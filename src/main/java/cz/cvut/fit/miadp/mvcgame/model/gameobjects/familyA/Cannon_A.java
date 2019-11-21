@@ -15,99 +15,109 @@ public class Cannon_A extends AbsCannon
 {
     private static final IShootingMode singleShootingMode = new SingleShootingMode();
     private static final IShootingMode doubleShootingMode = new NShootingMode();
-    private List<AbsMissile> shootBatch;
+    private List<AbsMissile> shootBag;
+    private double velocity;
+    private double angle;
 
-    public Cannon_A(IGameObjsFac goFactory)
-    {
+    public Cannon_A(IGameObjsFac goFactory) {
         super(goFactory);
         this.shootingMode = singleShootingMode;
         this.setX(MvcGameConfig.CANON_INIT_X);
         this.setY(MvcGameConfig.CANON_INIT_Y);
+        this.velocity = MvcGameConfig.CANNON_INIT_VELOCITY;
+        this.angle = MvcGameConfig.CANnON_INIT_ANGLE;
     }
 
-    public Double getVelocity()
-    {
-        return null;
-    }
-
-    public Double getAngle()
-    {
-        return null;
+    public Cannon_A(AbsCannon c) {
+        super(c);
+        this.setX(c.getX());
+        this.setY(c.getY());
+        this.velocity = c.getVelocity();
+        this.angle = c.getAngle();
     }
 
     @Override
-    public void setVelocity(Double velocity) {
+    public Double getVelocity() {
+       return this.velocity;
+    }
 
+    @Override
+    public Double getAngle()
+    {
+        return this.angle;
     }
 
     @Override
     public void setAngle(Double angle) {
-
+        this.angle = angle;
     }
 
-
-    public void setVelocity(Float velocity)
-    {
-
+    @Override
+    public void setVelocity(Double velocity) {
+        this.velocity = velocity;
     }
 
-    public void setAngle(Float angle)
-    {
-
+    @Override
+    public void aimUp() {
+        if (this.angle + MvcGameConfig.ANGLE_STEP > 90.0f) return;
+        this.angle += MvcGameConfig.ANGLE_STEP;
     }
 
-    public void aimUp()
-    {
-
+    @Override
+    public void aimDown() {
+        if (this.angle - MvcGameConfig.ANGLE_STEP < -90.0f) return;
+        this.angle -= MvcGameConfig.ANGLE_STEP;
     }
 
-    public void aimDown()
-    {
-
+    @Override
+    public void incPower() {
+        this.velocity += MvcGameConfig.VELOCITY_STEP;
     }
 
-    public void incPower()
-    {
-
-    }
-
-    public void decPower()
-    {
-
+    @Override
+    public void decPower() {
+        if (this.velocity - MvcGameConfig.VELOCITY_STEP < 0) return;
+        this.velocity -= MvcGameConfig.VELOCITY_STEP;
     }
 
     @Override
     public List<AbsMissile> shoot() {
-        this.shootBatch = new ArrayList<>();
+        this.shootBag = new ArrayList<>();
 
         this.shootingMode.shoot(this);
 
-        return this.shootBatch;
+        return this.shootBag;
     }
 
+    @Override
     public void setNShootingMode() {
         shootingMode = doubleShootingMode;
     }
 
+    @Override
     public void setSingleShootingMode() {
         shootingMode = singleShootingMode;
     }
 
     @Override
     public void primitiveShoot() {
-        this.shootBatch.add(this.goFactory.createMissile());
+        this.shootBag.add(this.goFactory.createMissile());
+    }
+
+    @Override
+    public AbsCannon clone() {
+        return new Cannon_A(this);
     }
 
     @Override
     public void moveUp() {
+        if (this.getY() - MvcGameConfig.MOVE_STEP <= 0) return;
         this.move(0, -1* MvcGameConfig.MOVE_STEP);
-
     }
 
     @Override
     public void moveDown() {
+        if (this.getY() + MvcGameConfig.MOVE_STEP >= MvcGameConfig.MAX_Y) return;
         this.move(0, MvcGameConfig.MOVE_STEP);
-
     }
-
 }
