@@ -18,6 +18,7 @@ import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsModelInfo;
 import cz.cvut.fit.miadp.mvcgame.observer.IObservable;
 import cz.cvut.fit.miadp.mvcgame.observer.IObserver;
 import cz.cvut.fit.miadp.mvcgame.proxy.IGameModel;
+import cz.cvut.fit.miadp.mvcgame.sounds.SoundPlayer;
 import cz.cvut.fit.miadp.mvcgame.strategy.IMovingStrategy;
 import cz.cvut.fit.miadp.mvcgame.strategy.RandomMoveStrategy;
 import cz.cvut.fit.miadp.mvcgame.strategy.RealisticMoveStrategy;
@@ -120,11 +121,6 @@ public class GameModel implements IObservable, IGameModel {
             command.doExecute();
             this.executedCommands.push(command);
         }
-    }
-
-    private void checkWin() {
-        if (this.score < MvcGameConfig.GOAL_TO_WIN) return;
-        stopGame();
     }
 
     @Override
@@ -280,14 +276,14 @@ public class GameModel implements IObservable, IGameModel {
     private void moveEnemies() {
         boolean incSpeed = isNewLevel();
         for (AbsEnemy enemy : this.enemies) {
-            if (incSpeed) enemy.setVelocity(enemy.getVelocity()+MvcGameConfig.VELOCITY_STEP);
+            if (incSpeed) enemy.setVelocity(Math.max(enemy.getVelocity()+MvcGameConfig.VELOCITY_STEP, MvcGameConfig.ENEMIES_SPEED));
             enemy.move();
         }
     }
 
     private boolean isNewLevel() {
         if (score >= level * 10) {
-            //SoundPlayer.playNewLevelEffect();
+            SoundPlayer.playNewLevelSound();
             level++;
             return true;
         }
@@ -335,7 +331,6 @@ public class GameModel implements IObservable, IGameModel {
         }
         executeCommands();
         moveGameObjects();
-        checkWin();
     }
 
     private void handleCollisions() {
@@ -346,7 +341,7 @@ public class GameModel implements IObservable, IGameModel {
         for (AbsMissile m : this.missiles) {
             for (AbsEnemy e : this.enemies) {
                 if (m.collidesWith(e)) {
-                    //SoundPlayer.playCollisionEffect();
+                    SoundPlayer.playCollisionSound();
                     this.score++;
                     enemiesToRemove.add(e);
                     missilesToRemove.add(m);
@@ -382,6 +377,7 @@ public class GameModel implements IObservable, IGameModel {
 
     public void cannonShoot() {
         this.missiles.addAll(this.cannon.shoot());
+        SoundPlayer.playShootSound();
         this.notifyMyObservers();
     }
 
