@@ -34,6 +34,7 @@ public class NShootingMode implements IShootingMode {
             cannon.setAngle(act_ange);
             cannon.primitiveShoot();
         }
+        cannon.setAngle(base_ange);
     }
 
     @Override

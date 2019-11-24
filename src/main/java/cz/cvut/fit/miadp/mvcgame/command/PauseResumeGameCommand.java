@@ -10,6 +10,6 @@ public class PauseResumeGameCommand extends AbsGameCommand {
 
     @Override
     public void execute() {
-        model.pauseResumeGame();
+        model.pauseEndGame();
     }
 }

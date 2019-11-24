@@ -9,7 +9,6 @@ import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsModelInfo;
 import cz.cvut.fit.miadp.mvcgame.observer.IObserver;
 import cz.cvut.fit.miadp.mvcgame.strategy.IMovingStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GameModelProxy implements IGameModel {
@@ -55,6 +54,11 @@ public class GameModelProxy implements IGameModel {
     }
 
     @Override
+    public void timeTick() {
+        this.model.timeTick();
+    }
+
+    @Override
     public AbsModelInfo getInfo() {
         return this.model.getInfo();
     }
@@ -70,8 +74,8 @@ public class GameModelProxy implements IGameModel {
     }
 
     @Override
-    public void pauseResumeGame() {
-        this.model.pauseResumeGame();
+    public void pauseEndGame() {
+        this.model.pauseEndGame();
     }
 
     @Override

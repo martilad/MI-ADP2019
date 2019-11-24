@@ -35,7 +35,7 @@ public class GameObjsFac_A implements IGameObjsFac {
     public AbsEnemy createEnemy() {
         int place = random.nextInt(this.model.getConfigMaxWidth() - (this.model.getConfigMaxWidth() / 5));
         int x_cannon_zone = (this.model.getConfigMaxWidth() / 5) + place;
-        int y = random.nextInt(this.model.getConfigMaxWidth());
+        int y = random.nextInt(this.model.getConfigMaxHeight());
         return new Enemy_A(x_cannon_zone, y, model.getLevel());
     }
 

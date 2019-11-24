@@ -15,7 +15,6 @@ import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsCollision;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsEnemy;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsMissile;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsModelInfo;
-import cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyA.Missile_A;
 import cz.cvut.fit.miadp.mvcgame.observer.IObservable;
 import cz.cvut.fit.miadp.mvcgame.observer.IObserver;
 import cz.cvut.fit.miadp.mvcgame.proxy.IGameModel;
@@ -38,7 +37,6 @@ public class GameModel implements IObservable, IGameModel {
     private List<AbsMissile> missiles;
     private List<AbsCollision> collisions;
 
-    private Timer timer;
     private long stopwatch;
     private int score;
     private int level;
@@ -55,14 +53,16 @@ public class GameModel implements IObservable, IGameModel {
         movingStrategies.add(new SimpleMoveStrategy());
         movingStrategies.add(new RandomMoveStrategy());
 
-
-        this.myObs = new ArrayList<IObserver>();
+        this.myObs = new ArrayList<>();
         this.cannon = this.goFact.createCannon();
         this.gameInfo = this.goFact.createModelInfo();
-        this.setStart();
         this.cannon = this.goFact.createCannon();
-        this.addEnemies();
-        this.initTimer();
+        this.stopwatch = System.currentTimeMillis();
+        this.toExecutedCommands = new LinkedBlockingQueue<>();
+        this.executedCommands = new Stack<>();
+        this.enemies = new ArrayList<>();
+        this.missiles = new ArrayList<>();
+        this.collisions = new ArrayList<>();
     }
 
     private void setStart(){
@@ -71,12 +71,6 @@ public class GameModel implements IObservable, IGameModel {
         this.actMoveStrategyIndex = 0;
         this.pause = false;
         this.runGame = true;
-        this.stopwatch = 0;
-        this.toExecutedCommands = new LinkedBlockingQueue<>();
-        this.executedCommands = new Stack<>();
-        this.enemies = new ArrayList<>();
-        this.missiles = new ArrayList<>();
-        this.collisions = new ArrayList<>();
     }
 
     public void moveCannonUp() {
@@ -120,24 +114,10 @@ public class GameModel implements IObservable, IGameModel {
         }
     }
 
-    private void initTimer() {
-        this.timer = new Timer();
-        this.timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                executeCommands();
-                moveGameObjects();
-                checkWin();
-                //System.out.println("hej");
-                stopwatch += MvcGameConfig.TIME_PERIOD;
-            }
-        }, 0, MvcGameConfig.TIME_PERIOD);
-    }
-
     private void executeCommands() {
         while (!this.toExecutedCommands.isEmpty()) {
             AbsGameCommand command = toExecutedCommands.poll();
-            command.extExecute();
+            command.doExecute();
             this.executedCommands.push(command);
         }
     }
@@ -188,7 +168,6 @@ public class GameModel implements IObservable, IGameModel {
     }
 
     public void stopGame() {
-        this.timer.cancel();
         this.runGame = false;
         this.notifyMyObservers();
     }
@@ -198,18 +177,13 @@ public class GameModel implements IObservable, IGameModel {
         setStart();
         this.cannon = this.goFact.createCannon();
         this.addEnemies();
-        initTimer();
+        this.runGame = true;
         this.notifyMyObservers();
     }
 
     @Override
-    public void pauseResumeGame() {
+    public void pauseEndGame() {
         this.pause = !this.pause;
-        if (this.pause) {
-            this.timer.cancel();
-        } else {
-            initTimer();
-        }
         this.notifyMyObservers();
     }
 
@@ -226,18 +200,13 @@ public class GameModel implements IObservable, IGameModel {
 
     @Override
     public void registerCommand(AbsGameCommand cmd) {
-        // todo: not good
         if (cmd instanceof StartGameCommand) {
-            cmd.extExecute();
+            cmd.doExecute();
             return;
         }
         if (!runGame) return;
-        if (cmd instanceof UndoLastCommand) {
-            cmd.extExecute();
-            return;
-        }
-        if (cmd instanceof PauseResumeGameCommand) {
-            cmd.extExecute();
+        if (cmd instanceof PauseResumeGameCommand || cmd instanceof UndoLastCommand) {
+            cmd.doExecute();
             return;
         }
         if (pause) return;
@@ -248,7 +217,7 @@ public class GameModel implements IObservable, IGameModel {
     public void undoLastCommand() {
         if (executedCommands.empty()) return;
         AbsGameCommand cmd = this.executedCommands.pop();
-        cmd.unexecute();
+        cmd.unExecute();
         notifyMyObservers();
     }
 
@@ -335,8 +304,8 @@ public class GameModel implements IObservable, IGameModel {
                 rem.add(misile);
             }
         }
-        for (AbsMissile misile : rem) {
-            this.missiles.remove(misile);
+        for (AbsMissile missile : rem) {
+            this.missiles.remove(missile);
         }
     }
 
@@ -347,7 +316,7 @@ public class GameModel implements IObservable, IGameModel {
     }
 
     public List<GameObject> getGameObjects() {
-        List<GameObject> go = new ArrayList<GameObject>();
+        List<GameObject> go = new ArrayList<>();
         go.addAll(this.missiles);
         go.addAll(this.enemies);
         go.addAll(this.collisions);
@@ -357,7 +326,16 @@ public class GameModel implements IObservable, IGameModel {
     }
 
     public void timeTick() {
-        this.moveMissiles();
+        if (!this.runGame || this.pause)return;
+        for (AbsCollision c : this.collisions) {
+            c.increaseTime();
+        }
+        for (AbsMissile missile : this.missiles){
+            missile.increaseTime();
+        }
+        executeCommands();
+        moveGameObjects();
+        checkWin();
     }
 
     private void handleCollisions() {
@@ -365,20 +343,19 @@ public class GameModel implements IObservable, IGameModel {
         Set<AbsMissile> missilesToRemove = new HashSet<>();
         Set<AbsCollision> collisionsToRemove = new HashSet<>();
 
-        for (AbsMissile m : missiles) {
-            for (AbsEnemy e : enemies) {
+        for (AbsMissile m : this.missiles) {
+            for (AbsEnemy e : this.enemies) {
                 if (m.collidesWith(e)) {
                     //SoundPlayer.playCollisionEffect();
                     this.score++;
                     enemiesToRemove.add(e);
                     missilesToRemove.add(m);
-                    this.collisions.add(goFact.createCollision(e.getX(), e.getY()));
+                    this.collisions.add(this.goFact.createCollision(e.getX(), e.getY()));
                 }
             }
         }
 
         for (AbsCollision c : this.collisions) {
-            c.increaseTime();
             if (c.getLifetime() > MvcGameConfig.COLLISION_TIME)
                 collisionsToRemove.add(c);
         }
@@ -387,8 +364,8 @@ public class GameModel implements IObservable, IGameModel {
             this.enemies.remove(enemy);
         }
 
-        for (AbsMissile mmissile : missilesToRemove) {
-            this.missiles.remove(mmissile);
+        for (AbsMissile missile : missilesToRemove) {
+            this.missiles.remove(missile);
         }
 
         for (AbsCollision collision : collisionsToRemove) {

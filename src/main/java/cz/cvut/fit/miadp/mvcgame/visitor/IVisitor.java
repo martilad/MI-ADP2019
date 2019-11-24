@@ -1,7 +1,7 @@
 package cz.cvut.fit.miadp.mvcgame.visitor;
 
+import cz.cvut.fit.miadp.mvcgame.bridge.IGameGraphics;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.*;
-import javafx.scene.canvas.GraphicsContext;
 
 public interface IVisitor
 {
@@ -11,5 +11,5 @@ public interface IVisitor
     void visitMissile(AbsMissile go);
     void visitCollision(AbsCollision go);
 
-    void setGraphics(GraphicsContext gr);
+    void setGraphics(IGameGraphics gr);
 }

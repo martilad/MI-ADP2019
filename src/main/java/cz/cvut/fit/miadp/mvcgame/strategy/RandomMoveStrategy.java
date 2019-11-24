@@ -12,7 +12,10 @@ public class RandomMoveStrategy implements IMovingStrategy {
     @Override
     public void updatePosition(AbsMissile missile) {
         double angleRadians = Math.toRadians(missile.getAngle());
-        missile.move((int)((missile.getVelocity()) * missile.getLifetime() * Math.cos(angleRadians)),
-                rnd.nextInt(MvcGameConfig.MOVE_STEP*3));
+        int rngY = rnd.nextInt(MvcGameConfig.MOVE_STEP*30);
+        missile.move((int)((missile.getVelocity()/5) * missile.getLifetime()/10 * Math.cos(angleRadians)),
+                (rngY - MvcGameConfig.MOVE_STEP*30/2));
+        //missile.move((int)((missile.getVelocity()) * missile.getLifetime() * Math.cos(angleRadians)),
+         //       (int)((missile.getVelocity()) * missile.getLifetime() * Math.sin(angleRadians)));
     }
 }

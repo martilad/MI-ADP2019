@@ -9,13 +9,14 @@ import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsModelInfo;
 import cz.cvut.fit.miadp.mvcgame.observer.IObserver;
 import cz.cvut.fit.miadp.mvcgame.strategy.IMovingStrategy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface IGameModel {
 
     int getConfigMaxHeight();
     int getConfigMaxWidth();
+
+    void timeTick();
 
     int getScore();
     long getStopwatch();
@@ -31,7 +32,7 @@ public interface IGameModel {
 
     void stopGame();
     void startGame();
-    void pauseResumeGame();
+    void pauseEndGame();
 
 
     void switchMovingStrategy();

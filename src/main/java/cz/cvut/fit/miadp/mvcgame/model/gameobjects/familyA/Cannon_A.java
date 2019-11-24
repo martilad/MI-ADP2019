@@ -26,7 +26,7 @@ public class Cannon_A extends AbsCannon
         this.setY(MvcGameConfig.CANON_INIT_Y);
         this.velocity = MvcGameConfig.CANNON_INIT_VELOCITY;
         System.out.println("velocituy+" + this.velocity);
-        this.angle = MvcGameConfig.CANnON_INIT_ANGLE;
+        this.angle = MvcGameConfig.CANNON_INIT_ANGLE;
     }
 
     public Cannon_A(AbsCannon c) {

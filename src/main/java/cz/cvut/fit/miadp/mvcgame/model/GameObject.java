@@ -29,6 +29,7 @@ public abstract class GameObject {
         this.position.setY(y);
     }
 
+
     public boolean collidesWith(GameObject other) {
         return (Math.abs(this.getX() - other.getX())) < MvcGameConfig.COLLISION_NEIGHBORHOOD
                 && (Math.abs(this.getY() - other.getY())) < MvcGameConfig.COLLISION_NEIGHBORHOOD;

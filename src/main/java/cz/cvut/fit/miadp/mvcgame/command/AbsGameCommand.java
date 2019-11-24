@@ -11,7 +11,7 @@ public abstract class AbsGameCommand {
     }
 
 
-    public void extExecute() {
+    public void doExecute() {
         this.memento = this.model.createMemento();
 
         this.execute();
@@ -20,7 +20,7 @@ public abstract class AbsGameCommand {
     public abstract void execute();
 
 
-    public void unexecute() {
+    public void unExecute() {
         this.model.setMemento(this.memento);
     }
 }

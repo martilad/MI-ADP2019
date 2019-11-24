@@ -22,12 +22,8 @@ public class Missile_A extends AbsMissile {
         return this.moveStrat;
     }
 
-    public void setStrategy(IMovingStrategy moveStrat) {
-        this.moveStrat = moveStrat;
-    }
 
     public void move(){
-        this.increaseTime();
         this.moveStrat.updatePosition(this);
     }
 
