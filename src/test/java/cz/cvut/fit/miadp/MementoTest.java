@@ -1,6 +1,6 @@
 package cz.cvut.fit.miadp;
 
 
-private class MementoTest{
+public class MementoTest{
     //todo: mockito
 }
