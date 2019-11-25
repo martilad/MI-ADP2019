@@ -8,8 +8,7 @@ public abstract class GameObject {
 
     private Position position = new Position(0,0);
 
-    public void move(int dx, int dy)
-    {
+    public void move(int dx, int dy) {
         this.position.move(dx,dy);
     }
 

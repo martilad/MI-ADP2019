@@ -189,7 +189,6 @@ public class GameModel implements IObservable, IGameModel {
     @Override
     public void switchMovingStrategy() {
         this.actMoveStrategyIndex = (this.actMoveStrategyIndex + 1) % this.movingStrategies.size();
-        System.out.println("Moving strategy: " + this.actMoveStrategyIndex);
     }
 
     @Override

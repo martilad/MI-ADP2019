@@ -11,7 +11,6 @@ import java.util.Random;
 public class GameObjsFac_A implements IGameObjsFac {
 
     private GameModel model;
-    private IMovingStrategy activeMovingStrategy = new SimpleMoveStrategy();
     private Random random = new Random();
     public GameObjsFac_A(GameModel model)
     {

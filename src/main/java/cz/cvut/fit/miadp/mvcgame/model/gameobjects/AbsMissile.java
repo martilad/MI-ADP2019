@@ -1,6 +1,7 @@
 package cz.cvut.fit.miadp.mvcgame.model.gameobjects;
 
 import cz.cvut.fit.miadp.mvcgame.model.TimeLifeAwareGameObject;
+import cz.cvut.fit.miadp.mvcgame.model.geometry.Position;
 import cz.cvut.fit.miadp.mvcgame.visitor.IVisitor;
 
 import javax.sound.midi.SysexMessage;
