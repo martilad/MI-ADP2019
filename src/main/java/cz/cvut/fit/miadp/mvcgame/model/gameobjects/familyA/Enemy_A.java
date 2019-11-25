@@ -17,6 +17,7 @@ public class Enemy_A extends AbsEnemy {
 
     @Override
     public void move() {
+
         int dirX = rnd.nextBoolean() ? 1 : -1;
         int dirY = rnd.nextBoolean() ? 1 : -1;
 

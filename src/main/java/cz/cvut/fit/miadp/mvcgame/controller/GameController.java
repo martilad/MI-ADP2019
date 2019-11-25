@@ -18,14 +18,12 @@ public class GameController {
         if (this.model == null) return;
         switch(keyCode){
             case "Up":
+            case "W":
                 this.model.registerCommand(new MoveUpCommand(this.model));
                 break;
             case "Down":
             case "S":
                 this.model.registerCommand(new MoveDownCommand(this.model));
-                break;
-            case "W":
-                this.model.registerCommand(new MoveUpCommand(this.model));
                 break;
             case "A":
             case "Left":

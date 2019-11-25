@@ -83,6 +83,9 @@ public class GameModel implements IObservable, IGameModel {
         return this.cannon;
     }
 
+    public void setCannon(AbsCannon cannon){ this.cannon = cannon; }
+
+
     public void moveCannonDown() {
         this.cannon.moveDown();
         this.notifyMyObservers();
@@ -282,7 +285,7 @@ public class GameModel implements IObservable, IGameModel {
     }
 
     private boolean isNewLevel() {
-        if (score >= level * 10) {
+        if (score >= level * 9) {
             SoundPlayer.playNewLevelSound();
             level++;
             return true;
@@ -307,8 +310,12 @@ public class GameModel implements IObservable, IGameModel {
 
     private void addEnemies() {
         for (int i = enemies.size(); i < MvcGameConfig.ENEMIES_CNT; i++) {
-            this.enemies.add(this.goFact.createEnemy());
+            this.addNewEnemy(this.goFact.createEnemy());
         }
+    }
+
+    public void addNewEnemy(AbsEnemy enemy){
+        this.enemies.add(enemy);
     }
 
     public List<GameObject> getGameObjects() {

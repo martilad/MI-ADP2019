@@ -25,7 +25,6 @@ public class Cannon_A extends AbsCannon
         this.setX(MvcGameConfig.CANON_INIT_X);
         this.setY(MvcGameConfig.CANON_INIT_Y);
         this.velocity = MvcGameConfig.CANNON_INIT_VELOCITY;
-        System.out.println("velocituy+" + this.velocity);
         this.angle = MvcGameConfig.CANNON_INIT_ANGLE;
     }
 
@@ -112,6 +111,7 @@ public class Cannon_A extends AbsCannon
 
     @Override
     public void moveUp() {
+
         if (this.getY() - MvcGameConfig.MOVE_STEP <= 0) return;
         this.move(0, -1* MvcGameConfig.MOVE_STEP);
     }
