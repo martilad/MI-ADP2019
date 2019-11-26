@@ -228,6 +228,7 @@ public class GameModel implements IObservable, IGameModel {
         this.enemies = m.getEnemies();
         this.missiles = m.getMissiles();
         this.level = m.getLevel();
+        this.stopwatch = m.getTime();
     }
 
     @Override
@@ -239,6 +240,7 @@ public class GameModel implements IObservable, IGameModel {
         m.setMissiles(this.missiles);
         m.setScore(this.score);
         m.setLevel(this.level);
+        m.setTime(this.stopwatch);
         return m;
     }
 
@@ -400,35 +402,39 @@ public class GameModel implements IObservable, IGameModel {
         private List<AbsEnemy> enemies = new ArrayList<>();
         private int score;
         private int level;
+        private long time;
 
         private int activeMovementStrategyIndex;
 
-        public Memento() {
+        Memento() {
         }
 
-        public int getLevel() {
-            return level;
+        long getTime(){return this.time;}
+        void setTime(long time){this.time = time;}
+
+        int getLevel() {
+            return this.level;
         }
 
-        public void setLevel(int level) {
+        void setLevel(int level) {
             this.level = level;
         }
 
 
-        public AbsCannon getCannon() {
-            return cannon;
+        AbsCannon getCannon() {
+            return this.cannon;
         }
 
-        public void setCannon(AbsCannon cannon) {
+        void setCannon(AbsCannon cannon) {
             this.cannon = cannon.clone();
         }
 
 
-        public List<AbsMissile> getMissiles() {
+        List<AbsMissile> getMissiles() {
             return missiles;
         }
 
-        public void setMissiles(List<AbsMissile> missiles) {
+        void setMissiles(List<AbsMissile> missiles) {
             List<AbsMissile> newMissiles = new ArrayList<>();
             for (AbsMissile m : missiles) {
                 newMissiles.add(m.clone());
@@ -436,11 +442,11 @@ public class GameModel implements IObservable, IGameModel {
             this.missiles = newMissiles;
         }
 
-        public List<AbsEnemy> getEnemies() {
+        List<AbsEnemy> getEnemies() {
             return enemies;
         }
 
-        public void setEnemies(List<AbsEnemy> enemies) {
+        void setEnemies(List<AbsEnemy> enemies) {
             List<AbsEnemy> newEnemies = new ArrayList<>();
             for (AbsEnemy e : enemies) {
                 newEnemies.add(e.clone());
@@ -448,19 +454,19 @@ public class GameModel implements IObservable, IGameModel {
             this.enemies = newEnemies;
         }
 
-        public int getActiveMovementStrategyIndex() {
+        int getActiveMovementStrategyIndex() {
             return activeMovementStrategyIndex;
         }
 
-        public void setActiveMovementStrategyIndex(int activeMovementStrategyIndex) {
+        void setActiveMovementStrategyIndex(int activeMovementStrategyIndex) {
             this.activeMovementStrategyIndex = activeMovementStrategyIndex;
         }
 
-        public int getScore() {
+        int getScore() {
             return score;
         }
 
-        public void setScore(int score) {
+        void setScore(int score) {
             this.score = score;
         }
     }

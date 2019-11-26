@@ -6,20 +6,20 @@ import cz.cvut.fit.miadp.mvcgame.bridge.IGameGraphics;
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.controller.GameController;
 import cz.cvut.fit.miadp.mvcgame.model.GameModel;
-// in future, use Bridge to remove this dependency
+import cz.cvut.fit.miadp.mvcgame.proxy.GameModelProxy;
 import cz.cvut.fit.miadp.mvcgame.proxy.IGameModel;
 import cz.cvut.fit.miadp.mvcgame.view.GameView;
-import javafx.util.Pair;
 
 public class MvcGame
 {
-    private IGameModel model;
+    private GameModelProxy proxyModel;
     private GameController controller;
     private GameView view;
 
     public void init(){
-        this.model = new GameModel();
-        this.view = new GameView(this.model);
+        IGameModel model = new GameModel();
+        this.proxyModel = new GameModelProxy(model);
+        this.view = new GameView(this.proxyModel);
         this.controller = this.view.makeController();
     }
 
@@ -28,7 +28,7 @@ public class MvcGame
     }
 
     public void update() {
-        this.model.timeTick();
+        this.proxyModel.timeTick();
     }
 
     public void render(IGameGraphics gr) {
@@ -37,7 +37,7 @@ public class MvcGame
     }
 
     public String getWindowTitle() {
-        return "The MI-ADP.16 MvcGame";
+        return "The MI-ADP.16 MvcGame - martilad (martilad@it.cvut.cz)";
     }
 
     public int getWindowWidth() {

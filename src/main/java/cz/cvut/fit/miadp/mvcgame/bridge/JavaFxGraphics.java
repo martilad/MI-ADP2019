@@ -5,17 +5,27 @@ import cz.cvut.fit.miadp.mvcgame.model.geometry.Position;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+
 public class JavaFxGraphics implements IGameGraphicsImplementor{
 
     private GraphicsContext gc;
     public JavaFxGraphics(GraphicsContext gc) {
         this.gc = gc;
     }
+    private Map<String, Image> imageCache = new HashMap<>();
 
     @Override
     public void drawImage(String path, Position pos) {
-        //todo: cache
-        Image img = new Image(path);
+        Image img;
+        if (imageCache.containsKey(path)){
+            img = imageCache.get(path);
+        }else{
+            img = new Image(path);
+            imageCache.put(path, img);
+        }
         this.gc.drawImage(img, pos.getX() - img.getWidth()/2, pos.getY() - img.getHeight()/2);
     }
 

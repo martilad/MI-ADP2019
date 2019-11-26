@@ -2,7 +2,6 @@ package cz.cvut.fit.miadp;
 
 import cz.cvut.fit.miadp.mvcgame.config.MvcGameConfig;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.AbsMissile;
-import cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyA.Cannon_A;
 import cz.cvut.fit.miadp.mvcgame.model.gameobjects.familyA.Missile_A;
 import cz.cvut.fit.miadp.mvcgame.strategy.RealisticMoveStrategy;
 import cz.cvut.fit.miadp.mvcgame.strategy.SimpleMoveStrategy;
